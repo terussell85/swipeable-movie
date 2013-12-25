@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+  <title>Swipeable Movie</title>
+
+  <script src="lib/angular.min.js"></script>
+
+  <script src="js/app.js"></script>
+  <script src="js/TestCtrl.js"></script>
+
+  <script src="js/SwipeableMovieCtrl.js"></script>
+  <script src="js/SwipeableMovie.js"></script>
+</head>
+
+<body>
+
+<div ng-controller="TestCtrl">
+  <input type="text" ng-model="testVar">
+  {{testVar}}
+
+  <swipeable-movie></swipeable-movie>
+</div>
+
+</body>
+
+</html>
