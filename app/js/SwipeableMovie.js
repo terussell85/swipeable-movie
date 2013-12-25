@@ -3,6 +3,11 @@ angular.module("app").directive("swipeableMovie", function(){
     restrict: "E",
     replace: true,
     templateUrl: "js/swipeable-movie.html",
-    controller: "SwipeableMovieCtrl"
+    controller: "SwipeableMovieCtrl",
+    scope: {
+      width: "=",
+      height: "=",
+      frames: "="
+    }
   }
 });
