@@ -1,4 +1,4 @@
-angular.module("app").controller("SwipeableMovieCtrl", function($scope, $element){
+angular.module("app").controller("SwipeableMovieCtrl", function($scope, $element, $swipe){
   console.log("SwipeableMovieCtrl initialized");
 
   var loadedImages;
@@ -11,6 +11,38 @@ angular.module("app").controller("SwipeableMovieCtrl", function($scope, $element
   var context = canvas.getContext("2d");
 
   loadImages();
+
+  $swipe.bind($element, { move : onSwipeMove });
+
+  var prevLocation = null;
+
+  /**
+   *
+   */
+  function onSwipeMove(location, event){
+    if(!prevLocation){
+      prevLocation = location;
+      return;
+    }
+
+    var curX = location.x;
+    var prevX = prevLocation.x;
+    var offset = curX - prevX < 0 ? -1 : 1;
+
+    //determine the new index
+    var newIndex = curIndex + offset;
+
+    //make sure we haven't exceeded any limits
+    newIndex = newIndex <= 0 ? 0 : newIndex;
+    newIndex = newIndex >= maxIndex ? maxIndex : newIndex;
+
+    //redraw if the index has changed
+    if (newIndex != curIndex) {
+      curIndex = newIndex;
+      context.drawImage(loadedImages[curIndex], 0, 0);
+    }
+
+  }
 
   /**
    *
@@ -26,13 +58,13 @@ angular.module("app").controller("SwipeableMovieCtrl", function($scope, $element
       canvasWidth = 1024;
 
     //store the max index
-    maxIndex = images.length-1;
+    maxIndex = loadedImages.length-1;
 
     //if there are no images yet, then just set the pixelsPerIndex to 0
-    pixelsPerIndex = imagesLen > 0 ? Math.ceil((canvasWidth * .8) / (imagesLen)) : 0;
+    pixelsPerIndex = imagesLen > 0 ? Math.ceil((canvasWidth * .8) / (loadedImages)) : 0;
 
     //draw the first image
-    context.drawImage(images[curIndex], 0, 0);
+    context.drawImage(loadedImages[curIndex], 0, 0);
   }
 
   /**
